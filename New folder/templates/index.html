@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Assistant</title>
+</head>
+<body>
+    <h1>Welcome to the Excel Assistant!</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+        <label for="file">Upload Excel File:</label>
+        <input type="file" id="file" name="file" accept=".xlsx, .xls, .csv">
+        <button type="button" onclick="uploadFile()">Upload</button>
+    </form>
+
+    <div id="sheets-section" style="display:none;">
+        <h2>Select Sheet</h2>
+        <select id="sheets-dropdown"></select>
+        <button type="button" onclick="selectSheet()">Select</button>
+    </div>
+
+    <div id="analysis-section" style="display:none;">
+        <h2>Data Analysis</h2>
+        <p id="dates-info"></p>
+        <p id="columns-info"></p>
+        <!-- Additional analysis options can be added here -->
+    </div>
+
+    <script>
+        function uploadFile() {
+            const formData = new FormData(document.getElementById('upload-form'));
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                    fetchSheets();
+                } else if (data.error) {
+                    alert(data.error);
+                }
+            });
+        }
+
+        function fetchSheets() {
+            fetch('/sheets?filename=' + document.getElementById('file').files[0].name)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.sheets) {
+                        const dropdown = document.getElementById('sheets-dropdown');
+                        dropdown.innerHTML = '';
+                        data.sheets.forEach(sheet => {
+                            let option = document.createElement('option');
+                            option.text = sheet;
+                            option.value = sheet;
+                            dropdown.add(option);
+                        });
+                        document.getElementById('sheets-section').style.display = 'block';
+                    }
+                });
+        }
+
+        function selectSheet() {
+            const sheet = document.getElementById('sheets-dropdown').value;
+            const filename = document.getElementById('file').files[0].name;
+            fetch('/select_sheet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    filename: filename,
+                    sheet_name: sheet,
+                    date_column: 'Date',  // Replace with your date column name
+                    comparison_column: 'Amount'  // Replace with your comparison column name
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.years && data.months) {
+                    document.getElementById('dates-info').innerText = `Available Years: ${data.years.join(', ')}, Available Months: ${data.months.join(', ')}`;
+                    document.getElementById('columns-info').innerText = `Available Columns: ${data.columns.join(', ')}`;
+                    document.getElementById('analysis-section').style.display = 'block';
+                } else if (data.error) {
+                    alert(data.error);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
