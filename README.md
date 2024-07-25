@@ -42,12 +42,16 @@
 
 Google Document AI: Платное, но мощное решение с AI.
 ABBYY FineReader: Обновленный OCR с встроенным AI.
+Yandex OCR: Хорошо работающая на русском языке.
 
 **Можно использовать Google Document AI, платная но очень сильную OCR:**
 ![image](https://github.com/user-attachments/assets/67bb9e3f-04c5-4052-901f-ada0a4eb5762)
 
 **Можно использовать новый OCR со встроенным AI от ABBY FineReader:**
 ![image](https://github.com/user-attachments/assets/eb0b9ba3-a811-42ec-87ce-77c72a72ecc6)
+
+**Можно использовать Yandex Vision OCR разработана впервую очередь для русского языка:**
+![image](https://github.com/user-attachments/assets/5b5748af-d9db-4c8c-8167-4143a49e3ea0)
 
 Интегрировать решение OCR в систему, обеспечив возможность конвертации данных из изображений в текст.
 
