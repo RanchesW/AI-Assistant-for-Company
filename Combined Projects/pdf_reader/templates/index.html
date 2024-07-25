@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Query Interface</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="upload-section">
+            <h1>Upload PDF and Ask Questions</h1>
+            <form id="pdf-form" enctype="multipart/form-data">
+                <input type="file" id="pdfFile" name="file" required>
+                <input type="text" id="query" name="query" placeholder="Enter your question" required>
+                <button type="button" onclick="submitQuery()">Submit</button>
+            </form>
+        </div>
+        <div class="response-section">
+            <h1>Response</h1>
+            <pre id="responseArea">Your response will appear here...</pre>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
